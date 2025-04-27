@@ -16,6 +16,10 @@
 		9319B28E2DBCA19D00F572D7 /* testingCameraUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9319B28D2DBCA19D00F572D7 /* testingCameraUITestsLaunchTests.swift */; };
 		9319B29B2DBCA59E00F572D7 /* FrameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9319B29A2DBCA59E00F572D7 /* FrameView.swift */; };
 		9319B29D2DBCA60D00F572D7 /* FrameHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9319B29C2DBCA60D00F572D7 /* FrameHandler.swift */; };
+		9319B2E82DBDCFAD00F572D7 /* GForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9319B2E72DBDCFAD00F572D7 /* GForce.swift */; };
+		9319B2EA2DBDD01A00F572D7 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9319B2E92DBDD01A00F572D7 /* MotionManager.swift */; };
+		9319B2EC2DBDD2C600F572D7 /* AltitudeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9319B2EB2DBDD2C600F572D7 /* AltitudeView.swift */; };
+		9319B2EE2DBDD2D600F572D7 /* AltitudeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9319B2ED2DBDD2D600F572D7 /* AltitudeManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +52,10 @@
 		9319B28D2DBCA19D00F572D7 /* testingCameraUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testingCameraUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		9319B29A2DBCA59E00F572D7 /* FrameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameView.swift; sourceTree = "<group>"; };
 		9319B29C2DBCA60D00F572D7 /* FrameHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameHandler.swift; sourceTree = "<group>"; };
+		9319B2E72DBDCFAD00F572D7 /* GForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GForce.swift; sourceTree = "<group>"; };
+		9319B2E92DBDD01A00F572D7 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
+		9319B2EB2DBDD2C600F572D7 /* AltitudeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltitudeView.swift; sourceTree = "<group>"; };
+		9319B2ED2DBDD2D600F572D7 /* AltitudeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AltitudeManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +112,10 @@
 				9319B2762DBCA19D00F572D7 /* Preview Content */,
 				9319B29A2DBCA59E00F572D7 /* FrameView.swift */,
 				9319B29C2DBCA60D00F572D7 /* FrameHandler.swift */,
+				9319B2E72DBDCFAD00F572D7 /* GForce.swift */,
+				9319B2E92DBDD01A00F572D7 /* MotionManager.swift */,
+				9319B2EB2DBDD2C600F572D7 /* AltitudeView.swift */,
+				9319B2ED2DBDD2D600F572D7 /* AltitudeManager.swift */,
 			);
 			path = testingCamera;
 			sourceTree = "<group>";
@@ -263,10 +275,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9319B2EC2DBDD2C600F572D7 /* AltitudeView.swift in Sources */,
 				9319B29B2DBCA59E00F572D7 /* FrameView.swift in Sources */,
+				9319B2EA2DBDD01A00F572D7 /* MotionManager.swift in Sources */,
 				9319B2732DBCA19C00F572D7 /* ContentView.swift in Sources */,
 				9319B29D2DBCA60D00F572D7 /* FrameHandler.swift in Sources */,
 				9319B2712DBCA19C00F572D7 /* testingCameraApp.swift in Sources */,
+				9319B2E82DBDCFAD00F572D7 /* GForce.swift in Sources */,
+				9319B2EE2DBDD2D600F572D7 /* AltitudeManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

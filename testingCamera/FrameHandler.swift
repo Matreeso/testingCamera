@@ -1,76 +1,61 @@
-//
-//  FrameHandler.swift
-//  testingCamera
-//
-//  Created by Saad Bajwa on 4/25/25.
-//
-
+import Foundation
+import SwiftUI
 import AVFoundation
-import CoreImage
-
 
 class FrameHandler: NSObject, ObservableObject {
-    @Published var frame: CGImage?
-    private var permissionGranted = false
-    private let captureSession = AVCaptureSession()
-    private let sessionQueue = DispatchQueue(label: "sessionQueue")
-    private let context = CIContext()
-    
-    override init (){
-        super.init()
-        checkPermission()
-        sessionQueue.async{ [unowned self] in
-            self.setupCaptureSession()
-            self.captureSession.startRunning()
-        }
-    }
-    
-    func checkPermission() {
-        switch AVCaptureDevice.authorizationStatus(for: .video){
-        case.authorized:
-            permissionGranted = true
-        case .notDetermined:
-            requestPermission()
-        default:
-            permissionGranted = false
-        }
-    }
-    
-    func requestPermission () {
-        AVCaptureDevice.requestAccess(for: .video) { [unowned self] granted in
-            self.permissionGranted = granted
-        }
-    }
-    
-    func setupCaptureSession(){
-        let videoOutput = AVCaptureVideoDataOutput()
-        
-        guard permissionGranted else {return}
-        guard let videoDevice = AVCaptureDevice.default(.builtInDualWideCamera, for: .video, position: .back) else {return}
-        guard let videoDeviceInput = try? AVCaptureDeviceInput(device: videoDevice) else {return}
-        guard captureSession.canAddInput(videoDeviceInput) else {return}
-        captureSession.addInput(videoDeviceInput)
-        
-        videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "sampleBufferQueue"))
-        captureSession.addOutput(videoOutput)
-        videoOutput.connection(with: .video)?.videoRotationAngle = 90
-    }
-}
+    let session = AVCaptureSession()
+    @Published var availableDevices: [AVCaptureDevice] = []
+    @Published var currentDevice: AVCaptureDevice?
+    @Published var zoomFactor: CGFloat = 1.0
+    @Published var isRecording: Bool = false  // ✅ Published for tracking
 
-extension FrameHandler: AVCaptureVideoDataOutputSampleBufferDelegate {
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection){
-        guard let cgImage = imageFromSampleBuffer(sampleBuffer: sampleBuffer) else {return}
-        
-        DispatchQueue.main.async { [unowned self] in
-            self.frame = cgImage
-        }
+    override init() {
+        super.init()
+        setupSession()
     }
-    
-    private func imageFromSampleBuffer(sampleBuffer: CMSampleBuffer) -> CGImage? {
-        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {return nil}
-        let ciImage = CIImage(cvPixelBuffer: imageBuffer)
-        guard let cgImage = context.createCGImage(ciImage, from:ciImage.extent) else {return nil}
-        
-        return cgImage
+
+    func setupSession() {
+        session.beginConfiguration()
+
+        if let currentInput = session.inputs.first {
+            session.removeInput(currentInput)
+        }
+
+        guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
+              let input = try? AVCaptureDeviceInput(device: device),
+              session.canAddInput(input) else { return }
+
+        session.addInput(input)
+        currentDevice = device
+        availableDevices = AVCaptureDevice.DiscoverySession(
+            deviceTypes: [.builtInWideAngleCamera, .builtInUltraWideCamera, .builtInTelephotoCamera],
+            mediaType: .video,
+            position: .back
+        ).devices
+
+        session.commitConfiguration()
+        session.startRunning()
+    }
+
+    func switchCamera(to device: AVCaptureDevice) {
+        session.beginConfiguration()
+        session.inputs.forEach { session.removeInput($0) }
+        if let input = try? AVCaptureDeviceInput(device: device), session.canAddInput(input) {
+            session.addInput(input)
+            currentDevice = device
+        }
+        session.commitConfiguration()
+    }
+
+    func updateZoom(to factor: CGFloat) {
+        guard let device = currentDevice else { return }
+        try? device.lockForConfiguration()
+        device.videoZoomFactor = min(max(factor, 1.0), device.activeFormat.videoMaxZoomFactor)
+        device.unlockForConfiguration()
+        zoomFactor = factor
+    }
+
+    func toggleRecording() {
+        isRecording.toggle()  // ✅ Toggle published bool
     }
 }
